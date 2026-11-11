@@ -1,51 +1,39 @@
-## Visual Development Journey
+# Process 📸
 
-<details open>
-  <summary><b>1. Initial Commit & Connecting the GitHub Remote</b></summary>
-  <br>
-  <p align="center">
-    <img src="screenshots/Screenshot From 2026-11-11 20-07-30.png" width="85%" alt="Connecting GitHub Remote in GitKraken">
-    <br>
-    <em>Committing assistant.py, buggy.py, and hello.py (commit 3b0a23) and troubleshooting the initial GitHub remote connection when a repository with the same name already existed online.</em>
-  </p>
-</details>
+How the Local AI Coding Assistant was built, in pictures.
 
-<details>
-  <summary><b>2. Clean Baseline on Master</b></summary>
-  <br>
-  <p align="center">
-    <img src="screenshots/Screenshot From 2026-11-11 20-09-12.png" width="85%" alt="Initial commits on master branch">
-    <br>
-    <em>Establishing the foundational commit history on the master branch with the core Python AI assistant and intentional bug test script.</em>
-  </p>
-</details>
+---
 
-<details>
-  <summary><b>3. Local AI Bug Detection & Launching the Web Lab</b></summary>
-  <br>
-  <p align="center">
-    <img src="screenshots/Screenshot From 2026-11-11 21-22-53.jpg" width="85%" alt="Terminal output and local HTTP server">
-    <br>
-    <em>Verifying the local AI's fix for buggy.py in the terminal (catching the singular vs. plural naming typo), creating index.html, style.css, and script.js on the different_Lab branch, and serving the site on port 8080.</em>
-  </p>
-</details>
+### 1 · Installing Ollama
+![Installing Ollama](images/pic1.png)
 
-<details>
-  <summary><b>4. Reviewing Pull Request #1 in GitKraken</b></summary>
-  <br>
-  <p align="center">
-    <img src="screenshots/Screenshot From 2026-11-11 22-48-29.png" width="85%" alt="GitHub Pull Request inside GitKraken">
-    <br>
-    <em>Managing GitHub Pull Request #1 ("web README") directly inside GitKraken to merge changes from the website branch into master with zero conflicts.</em>
-  </p>
-</details>
+### 2 · Downloading the model
+![Downloading Qwen3](images/pic2.png)
 
-<details>
-  <summary><b>5. Merging Branches & Organizing the Web Directory</b></summary>
-  <br>
-  <p align="center">
-    <img src="screenshots/Screenshot From 2026-11-11 23-06-45.png" width="85%" alt="Full multi-branch commit graph in GitKraken">
-    <br>
-    <em>The complete commit graph showing iterative styling on different_Lab, branch merges, and commit f18a02 moving the interactive website files into a dedicated web/ folder.</em>
-  </p>
-</details>
+### 3 · First chat with the local model
+![First chat with Qwen3](images/pic3.png)
+
+### 4 · Python project and virtual environment
+![Virtual environment](images/pic4.png)
+
+### 5 · Writing assistant.py
+![assistant.py](images/pic5.png)
+
+### 6 · The buggy code
+![buggy.py and the NameError](images/pic6.png)
+
+### 7 · The AI finds the bug
+![The assistant explains the bug](images/pic7.png)
+
+### 8 · Ollama in VS Code
+![VS Code integration](images/pic8.png)
+
+### 9 · The Bug Scanner website
+![Bug Scanner website](images/pic9.png)
+
+### 10 · Proof it runs locally
+![ollama ps](images/pic10.png)
+
+---
+
+[← Back to README](README.md)

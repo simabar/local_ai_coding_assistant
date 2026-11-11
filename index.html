@@ -3,196 +3,164 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Local AI Lab — ThinkPad Field Notes</title>
+  <title>Bug Scanner · Local AI Lab</title>
+  <!-- Two fonts: Anton (big poster letters) + Fraunces (friendly serif).
+       If you're offline, the page falls back to fonts already on your laptop. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:opsz,wght@9..144,400;9..144,800&display=swap">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <header class="site-header">
-    <div class="container header-inner">
-      <div>
-        <span class="badge">ThinkPad Field Notes • Zero Cloud • Zero API Cost</span>
-        <h1>Local AI Lab: Beyond ChatGPT</h1>
-        <p class="subtitle">
-          A cozy, interactive look at building a 100% local Python coding assistant on an older i7 ThinkPad with 12 GB RAM using Ollama and Qwen3 1.7B.
-        </p>
-      </div>
-      <div class="status-card">
-        <div class="status-dot" id="ollama-dot"></div>
-        <div>
-          <strong id="ollama-status-title">Checking localhost:11434...</strong>
-          <small id="ollama-status-sub">Simulation fallback ready for web visitors</small>
-        </div>
-      </div>
+
+  <!-- ===== Top bar ===== -->
+  <header class="topbar">
+    <a class="logo" href="#top">LOCAL<br>AI LAB</a>
+    <div class="status" id="status">
+      <span class="status-dot"></span>
+      <span id="status-text">Looking for the assistant…</span>
+      <span class="model-chip" id="model-chip">model ?</span>
     </div>
   </header>
 
-  <nav class="nav-tabs container">
-    <button class="tab-btn active" data-tab="process">1. The Build Process</button>
-    <button class="tab-btn" data-tab="code">2. Code & Architecture</button>
-    <button class="tab-btn" data-tab="workbench">3. Interactive Workbench</button>
-    <button class="tab-btn" data-tab="benchmarks">4. Benchmarks & Roadmap</button>
-  </nav>
+  <main>
 
-  <main class="container">
-    <!-- TAB 1: THE BUILD PROCESS -->
-    <section id="tab-process" class="tab-content active">
-      <div class="intro-note">
-        <strong>Project Goal:</strong> Run a local AI on a ThinkPad that analyzes Python code, finds and explains bugs, suggests improvements, communicates via Python, and integrates into VS Code—without subscriptions or cloud APIs.
-      </div>
+    <!-- ===== SLIDE 1: Hero ===== -->
+    <section class="slide slide-orange hero" id="top">
+      <div class="burst burst-yellow hero-burst"><span>100%<br>offline</span></div>
 
-      <div class="timeline">
-        <article class="step-card">
-          <div class="step-header">
-            <span class="step-num">Phase 1</span>
-            <h2>Preparing the Local Model</h2>
-          </div>
-          <p>Because the ThinkPad has 12 GB RAM and an older i7 processor, we chose <code>qwen3:1.7b</code> over the larger 4B model so live demos stay responsive.</p>
-          <pre><code>ollama run qwen3:1.7b
-# Test prompt: Explain the difference between a Python list and a tuple.
-# Exit with /bye and verify installed models:
-ollama list</code></pre>
-        </article>
+      <h1 class="poster">
+        Find the
+        <span class="tile tile-yellow">🐞</span>
+        bug before
+        <span class="tile tile-code">NameError</span>
+        it finds you
+      </h1>
 
-        <article class="step-card">
-          <div class="step-header">
-            <span class="step-num">Phase 2</span>
-            <h2>Connecting Ollama with Python</h2>
-          </div>
-          <p>We isolated the project in a virtual environment and installed the Ollama Python library so our script can talk to the local service on port 11434.</p>
-          <pre><code>mkdir ~/local-ai-coding-assistant
-cd ~/local-ai-coding-assistant
-python3 -m venv .venv
-source .venv/bin/activate
-pip install ollama</code></pre>
-        </article>
+      <p class="lead">A local AI that reads your Python, explains the bug and writes the fix.
+        It runs on this ThinkPad. No cloud, no API key.</p>
 
-        <article class="step-card">
-          <div class="step-header">
-            <span class="step-num">Phase 3</span>
-            <h2>VS Code Integration</h2>
-          </div>
-          <p>To move beyond the terminal, we installed the official Ollama extension in VS Code (v1.127+), which connects directly to <code>127.0.0.1:11434</code> for inline chat.</p>
-        </article>
+      <a class="big-btn" href="#scanner">Start scanning ↓</a>
 
-        <article class="step-card">
-          <div class="step-header">
-            <span class="step-num">Phase 4</span>
-            <h2>Git & GitKraken Workflow</h2>
-          </div>
-          <p>Every stage—from <code>assistant.py</code> and <code>buggy.py</code> to this interactive website—was staged, committed, and pushed to GitHub using GitKraken.</p>
-        </article>
-      </div>
+      <span class="slide-logo">LOCAL<br>AI LAB</span><span class="slide-dot"></span>
     </section>
 
-    <!-- TAB 2: CODE & ARCHITECTURE -->
-    <section id="tab-code" class="tab-content">
-      <div class="grid-two">
-        <div class="card">
-          <h2>Local Architecture Flow</h2>
-          <p class="muted">Click any layer below to see how requests travel inside the laptop without touching the internet:</p>
-          <div class="arch-stack" id="arch-stack">
-            <button class="arch-node active" data-info="Your CLI script (assistant.py) or this browser interface reads the Python file and user prompt.">1. Your Python Program (assistant.py)</button>
-            <div class="arch-arrow">↓</div>
-            <button class="arch-node" data-info="The official 'ollama' pip package formats the system and user messages into an API request.">2. Ollama Python Library</button>
-            <div class="arch-arrow">↓</div>
-            <button class="arch-node" data-info="Local loopback address where the background service listens—zero external network traffic.">3. localhost:11434</button>
-            <div class="arch-arrow">↓</div>
-            <button class="arch-node" data-info="Manages model weights in RAM and schedules inference on the ThinkPad CPU.">4. Ollama Server</button>
-            <div class="arch-arrow">↓</div>
-            <button class="arch-node" data-info="Compact 1.7-billion parameter model analyzing code syntax, bugs, and fixes.">5. Qwen3 1.7B Model</button>
-          </div>
-          <div class="arch-detail" id="arch-detail">
-            Your CLI script (assistant.py) or this browser interface reads the Python file and user prompt.
-          </div>
-        </div>
+    <!-- ===== SLIDE 2: The scanner ===== -->
+    <section class="slide slide-yellow" id="scanner">
+      <h2 class="poster poster-md">Paste. <span class="tile tile-pink">✂</span> Scan. Fix.</h2>
 
-        <div class="card">
-          <div class="file-tabs">
-            <button class="file-btn active" data-file="assistant">assistant.py</button>
-            <button class="file-btn" data-file="buggy">buggy.py</button>
-          </div>
-          <pre class="code-viewer"><code id="file-code-display"></code></pre>
-        </div>
-      </div>
-    </section>
+      <div class="workbench">
 
-    <!-- TAB 3: INTERACTIVE WORKBENCH -->
-    <section id="tab-workbench" class="tab-content">
-      <div class="card">
-        <div class="workbench-header">
-          <div>
-            <h2>Live Code Review Workbench</h2>
-            <p class="muted">Test a buggy Python snippet below. Uses local Ollama if running, or simulated Qwen3 output for web visitors.</p>
-          </div>
-          <div class="preset-group">
-            <button class="preset-btn" data-preset="buggy">Load buggy.py (NameError)</button>
-            <button class="preset-btn" data-preset="zero">Load ZeroDivision Bug</button>
-          </div>
-        </div>
-
-        <div class="grid-two">
-          <div>
-            <label class="field-label" for="code-input">Python Code to Analyze:</label>
-            <textarea id="code-input" rows="8"></textarea>
-
-            <label class="field-label" for="prompt-input">Question for Qwen3 1.7B:</label>
-            <input type="text" id="prompt-input" value="Find the bug, explain why it happens and provide a corrected version.">
-
-            <button id="run-btn" class="primary-btn">Run Local Analysis</button>
-          </div>
-
-          <div>
-            <label class="field-label">Model Response:</label>
-            <div id="ai-output" class="output-box">
-              Click "Run Local Analysis" to inspect the code and generate a fix.
+        <!-- Left: the code -->
+        <div class="card card-black">
+          <div class="card-head">
+            <h3>Your code</h3>
+            <div class="presets">
+              <button class="chip" data-preset="name">buggy.py</button>
+              <button class="chip" data-preset="zero">empty list</button>
+              <button class="chip" data-preset="default">sneaky default</button>
             </div>
           </div>
+
+          <div class="editor" id="editor">
+            <pre class="gutter" id="gutter" aria-hidden="true">1</pre>
+            <textarea id="code" spellcheck="false" aria-label="Python code"></textarea>
+            <div class="scanline" aria-hidden="true"></div>
+          </div>
+
+          <label class="question">
+            <span>Ask the assistant</span>
+            <input id="question" type="text"
+                   value="Find the bug, explain why it happens and provide a corrected version.">
+          </label>
+
+          <button class="scan-btn" id="scan-btn">
+            Scan for bugs <kbd>Ctrl + Enter</kbd>
+          </button>
+        </div>
+
+        <!-- Right: the answer -->
+        <div class="card card-cream">
+          <div class="card-head">
+            <h3>Diagnosis</h3>
+            <span class="timer" id="timer">0.0 s</span>
+          </div>
+
+          <div class="report" id="report">
+            <div class="empty" id="empty">
+              <p class="poster poster-sm">No bugs<br>found yet</p>
+              <p>Pick an example or paste your own code, then press Scan.</p>
+            </div>
+
+            <div class="thinking hidden" id="thinking">
+              <div class="burst burst-orange spin"></div>
+              <p id="thinking-text">Waking up the model…</p>
+            </div>
+
+            <details class="thoughts hidden" id="thoughts">
+              <summary>Show the model's thinking</summary>
+              <pre id="thoughts-text"></pre>
+            </details>
+
+            <article class="answer hidden" id="answer"></article>
+          </div>
         </div>
       </div>
+
+      <span class="slide-logo">LOCAL<br>AI LAB</span><span class="slide-dot"></span>
     </section>
 
-    <!-- TAB 4: BENCHMARKS & ROADMAP -->
-    <section id="tab-benchmarks" class="tab-content">
-      <h2>ThinkPad Hardware Benchmarks</h2>
-      <p class="muted">Measured live using standard Linux diagnostic tools during model execution:</p>
-      <div class="grid-three">
-        <div class="card metric-card">
-          <code>ollama ps</code>
-          <h3>Active Model Footprint</h3>
-          <p>Verifies that <code>qwen3:1.7b</code> is loaded in memory and running 100% on local CPU hardware.</p>
+    <!-- ===== SLIDE 3: How it works ===== -->
+    <section class="slide slide-black" id="how">
+      <h2 class="poster poster-md text-yellow">
+        Your code <span class="tile tile-green">💻</span> never leaves this laptop
+      </h2>
+      <p class="lead text-cream">Every scan travels through five stops, all on this machine.
+        Watch them light up while the model works.</p>
+
+      <ol class="nodes">
+        <li class="node node-pink"   data-step="0"><b>01</b><strong>Browser</strong><small>index.html</small></li>
+        <li class="node node-yellow" data-step="1"><b>02</b><strong>Bridge</strong><small>server.py</small></li>
+        <li class="node node-orange" data-step="2"><b>03</b><strong>Assistant</strong><small>assistant.py</small></li>
+        <li class="node node-green"  data-step="3"><b>04</b><strong>Ollama</strong><small>localhost:11434</small></li>
+        <li class="node node-cream"  data-step="4"><b>05</b><strong>Qwen3</strong><small id="node-model">local model</small></li>
+      </ol>
+
+      <span class="slide-logo">LOCAL<br>AI LAB</span><span class="slide-dot"></span>
+    </section>
+
+    <!-- ===== SLIDE 4: Run it yourself ===== -->
+    <section class="slide slide-pink" id="run">
+      <h2 class="poster poster-md">Run it in <span class="tile tile-orange">3</span> steps</h2>
+
+      <div class="steps">
+        <div class="step">
+          <span class="burst burst-black step-num"><span>1</span></span>
+          <h3>Get the model</h3>
+          <pre><code>ollama pull qwen3:4b</code></pre>
+          <button class="copy">Copy</button>
         </div>
-        <div class="card metric-card">
-          <code>free -h</code>
-          <h3>RAM Consumption</h3>
-          <p>Tracks available memory on the 12 GB ThinkPad so the OS, VS Code, and Ollama stay responsive together.</p>
+        <div class="step">
+          <span class="burst burst-black step-num"><span>2</span></span>
+          <h3>Wake up Python</h3>
+          <pre><code>source .code_assistant/bin/activate</code></pre>
+          <button class="copy">Copy</button>
         </div>
-        <div class="card metric-card">
-          <code>time python assistant.py buggy.py</code>
-          <h3>Inference Latency</h3>
-          <p>Measures exact wall-clock time from reading the file to printing the completed bug explanation.</p>
+        <div class="step">
+          <span class="burst burst-black step-num"><span>3</span></span>
+          <h3>Start the bridge</h3>
+          <pre><code>python web/server.py</code></pre>
+          <button class="copy">Copy</button>
         </div>
       </div>
 
-      <h2 class="section-gap">Phase 5: Future Agentic Roadmap</h2>
-      <div class="grid-three">
-        <div class="card">
-          <h3>Test Generator</h3>
-          <p>Automatically generate and run <code>pytest</code> unit tests, then feed test failures back to the LLM for self-healing code.</p>
-        </div>
-        <div class="card">
-          <h3>Git Diff Reviewer</h3>
-          <p>Inspect staged changes before committing in GitKraken to catch unintended bugs early.</p>
-        </div>
-        <div class="card">
-          <h3>Tool-Calling AI Agent</h3>
-          <p>Allow the assistant to autonomously execute local linter and test commands in a sandbox.</p>
-        </div>
-      </div>
+      <span class="slide-logo">LOCAL<br>AI LAB</span><span class="slide-dot"></span>
     </section>
   </main>
 
-  <footer class="container footer">
-    <p>Built with Python, Ollama (Qwen3 1.7B), and GitKraken • Local AI Coding Assistant Project</p>
+  <footer class="footer">
+    <p class="poster poster-sm text-yellow">Built with Python, Ollama &amp; Qwen3</p>
+    <a href="https://github.com/simabar/local_ai_coding_assistant">See the code on GitHub →</a>
   </footer>
 
   <script src="script.js"></script>

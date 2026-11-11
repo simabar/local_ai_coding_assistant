@@ -167,6 +167,24 @@ document.addEventListener("keydown", (e) => {
   if (e.ctrlKey && e.key === "Enter") scan();
 });
 
+// ---------- "Copy" buttons on the Run-it slide ----------
+document.querySelectorAll(".copy").forEach((btn) => {
+  btn.addEventListener("click", async () => {
+    const command = btn.parentElement.querySelector("code").textContent;
+    try {
+      await navigator.clipboard.writeText(command);
+      btn.textContent = "Copied!";
+    } catch {
+      btn.textContent = "Select & copy by hand";
+    }
+    btn.classList.add("copied");
+    setTimeout(() => {
+      btn.textContent = "Copy";
+      btn.classList.remove("copied");
+    }, 1500);
+  });
+});
+
 // ---------- Turning the model's answer into HTML ----------
 function showAnswer(text) {
   // Qwen3 often "thinks out loud" inside <think>…</think>. Split that off.

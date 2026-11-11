@@ -4,104 +4,163 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Bug Scanner · Local AI Lab</title>
+  <!-- Two fonts: Anton (big poster letters) + Fraunces (friendly serif).
+       If you're offline, the page falls back to fonts already on your laptop. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:opsz,wght@9..144,400;9..144,800&display=swap">
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <!-- ===== Top bar: name + live connection status ===== -->
+  <!-- ===== Top bar ===== -->
   <header class="topbar">
-    <div class="brand">
-      <span class="brand-mark">◉</span>
-      <div>
-        <h1>Bug Scanner</h1>
-        <p>A local AI that reads your Python. No cloud, no API key.</p>
-      </div>
-    </div>
-
+    <a class="logo" href="#top">LOCAL<br>AI LAB</a>
     <div class="status" id="status">
       <span class="status-dot"></span>
-      <span class="status-text" id="status-text">Looking for the assistant…</span>
+      <span id="status-text">Looking for the assistant…</span>
       <span class="model-chip" id="model-chip">model ?</span>
     </div>
   </header>
 
-  <main class="lab">
+  <main>
 
-    <!-- ===== Left: the code to scan ===== -->
-    <section class="panel">
-      <div class="panel-head">
-        <h2><span class="tag">01</span> Specimen</h2>
-        <div class="presets">
-          <button class="chip" data-preset="name">buggy.py</button>
-          <button class="chip" data-preset="zero">empty list</button>
-          <button class="chip" data-preset="default">sneaky default</button>
-        </div>
-      </div>
+    <!-- ===== SLIDE 1: Hero ===== -->
+    <section class="slide slide-orange hero" id="top">
+      <div class="burst burst-yellow hero-burst"><span>100%<br>offline</span></div>
 
-      <div class="editor" id="editor">
-        <pre class="gutter" id="gutter" aria-hidden="true">1</pre>
-        <textarea id="code" spellcheck="false" aria-label="Python code"></textarea>
-        <div class="scanline" aria-hidden="true"></div>
-      </div>
+      <h1 class="poster">
+        Find the
+        <span class="tile tile-yellow">🐞</span>
+        bug before
+        <span class="tile tile-code">NameError</span>
+        it finds you
+      </h1>
 
-      <label class="question">
-        <span>Ask the assistant</span>
-        <input id="question" type="text"
-               value="Find the bug, explain why it happens and provide a corrected version.">
-      </label>
+      <p class="lead">A local AI that reads your Python, explains the bug and writes the fix.
+        It runs on this ThinkPad. No cloud, no API key.</p>
 
-      <button class="scan-btn" id="scan-btn">
-        <span class="scan-btn-label">Scan for bugs</span>
-        <kbd>Ctrl + Enter</kbd>
-      </button>
+      <a class="big-btn" href="#scanner">Start scanning ↓</a>
+
+      <span class="slide-logo">LOCAL<br>AI LAB</span><span class="slide-dot"></span>
     </section>
 
-    <!-- ===== Right: what the model says ===== -->
-    <section class="panel">
-      <div class="panel-head">
-        <h2><span class="tag">02</span> Diagnosis</h2>
-        <span class="timer" id="timer">0.0 s</span>
-      </div>
+    <!-- ===== SLIDE 2: The scanner ===== -->
+    <section class="slide slide-yellow" id="scanner">
+      <h2 class="poster poster-md">Paste. <span class="tile tile-pink">✂</span> Scan. Fix.</h2>
 
-      <div class="report" id="report">
-        <div class="empty" id="empty">
-          <pre class="bug-art">
-   \   /
-  ( o.o )   no bugs found yet…
-   > ^ &lt;    paste code and press Scan
-          </pre>
+      <div class="workbench">
+
+        <!-- Left: the code -->
+        <div class="card card-black">
+          <div class="card-head">
+            <h3>Your code</h3>
+            <div class="presets">
+              <button class="chip" data-preset="name">buggy.py</button>
+              <button class="chip" data-preset="zero">empty list</button>
+              <button class="chip" data-preset="default">sneaky default</button>
+            </div>
+          </div>
+
+          <div class="editor" id="editor">
+            <pre class="gutter" id="gutter" aria-hidden="true">1</pre>
+            <textarea id="code" spellcheck="false" aria-label="Python code"></textarea>
+            <div class="scanline" aria-hidden="true"></div>
+          </div>
+
+          <label class="question">
+            <span>Ask the assistant</span>
+            <input id="question" type="text"
+                   value="Find the bug, explain why it happens and provide a corrected version.">
+          </label>
+
+          <button class="scan-btn" id="scan-btn">
+            Scan for bugs <kbd>Ctrl + Enter</kbd>
+          </button>
         </div>
 
-        <div class="thinking hidden" id="thinking">
-          <div class="pulse"></div>
-          <p id="thinking-text">Waking up the model…</p>
+        <!-- Right: the answer -->
+        <div class="card card-cream">
+          <div class="card-head">
+            <h3>Diagnosis</h3>
+            <span class="timer" id="timer">0.0 s</span>
+          </div>
+
+          <div class="report" id="report">
+            <div class="empty" id="empty">
+              <p class="poster poster-sm">No bugs<br>found yet</p>
+              <p>Pick an example or paste your own code, then press Scan.</p>
+            </div>
+
+            <div class="thinking hidden" id="thinking">
+              <div class="burst burst-orange spin"></div>
+              <p id="thinking-text">Waking up the model…</p>
+            </div>
+
+            <details class="thoughts hidden" id="thoughts">
+              <summary>Show the model's thinking</summary>
+              <pre id="thoughts-text"></pre>
+            </details>
+
+            <article class="answer hidden" id="answer"></article>
+          </div>
         </div>
-
-        <details class="thoughts hidden" id="thoughts">
-          <summary>Show the model's thinking</summary>
-          <pre id="thoughts-text"></pre>
-        </details>
-
-        <article class="answer hidden" id="answer"></article>
       </div>
+
+      <span class="slide-logo">LOCAL<br>AI LAB</span><span class="slide-dot"></span>
+    </section>
+
+    <!-- ===== SLIDE 3: How it works ===== -->
+    <section class="slide slide-black" id="how">
+      <h2 class="poster poster-md text-yellow">
+        Your code <span class="tile tile-green">💻</span> never leaves this laptop
+      </h2>
+      <p class="lead text-cream">Every scan travels through five stops, all on this machine.
+        Watch them light up while the model works.</p>
+
+      <ol class="nodes">
+        <li class="node node-pink"   data-step="0"><b>01</b><strong>Browser</strong><small>index.html</small></li>
+        <li class="node node-yellow" data-step="1"><b>02</b><strong>Bridge</strong><small>server.py</small></li>
+        <li class="node node-orange" data-step="2"><b>03</b><strong>Assistant</strong><small>assistant.py</small></li>
+        <li class="node node-green"  data-step="3"><b>04</b><strong>Ollama</strong><small>localhost:11434</small></li>
+        <li class="node node-cream"  data-step="4"><b>05</b><strong>Qwen3</strong><small id="node-model">local model</small></li>
+      </ol>
+
+      <span class="slide-logo">LOCAL<br>AI LAB</span><span class="slide-dot"></span>
+    </section>
+
+    <!-- ===== SLIDE 4: Run it yourself ===== -->
+    <section class="slide slide-pink" id="run">
+      <h2 class="poster poster-md">Run it in <span class="tile tile-orange">3</span> steps</h2>
+
+      <div class="steps">
+        <div class="step">
+          <span class="burst burst-black step-num"><span>1</span></span>
+          <h3>Get the model</h3>
+          <pre><code>ollama pull qwen3:4b</code></pre>
+          <button class="copy">Copy</button>
+        </div>
+        <div class="step">
+          <span class="burst burst-black step-num"><span>2</span></span>
+          <h3>Wake up Python</h3>
+          <pre><code>source .code_assistant/bin/activate</code></pre>
+          <button class="copy">Copy</button>
+        </div>
+        <div class="step">
+          <span class="burst burst-black step-num"><span>3</span></span>
+          <h3>Start the bridge</h3>
+          <pre><code>python web/server.py</code></pre>
+          <button class="copy">Copy</button>
+        </div>
+      </div>
+
+      <span class="slide-logo">LOCAL<br>AI LAB</span><span class="slide-dot"></span>
     </section>
   </main>
 
-  <!-- ===== Bottom: the journey of one request ===== -->
-  <section class="pipeline" aria-label="How your request travels">
-    <p class="pipeline-title">Where your code goes (it never leaves this laptop)</p>
-    <ol class="nodes">
-      <li class="node" data-step="0"><strong>Browser</strong><small>index.html</small></li>
-      <li class="node" data-step="1"><strong>Bridge</strong><small>server.py</small></li>
-      <li class="node" data-step="2"><strong>Assistant</strong><small>assistant.py</small></li>
-      <li class="node" data-step="3"><strong>Ollama</strong><small>localhost:11434</small></li>
-      <li class="node" data-step="4"><strong>Qwen3</strong><small id="node-model">local model</small></li>
-    </ol>
-  </section>
-
   <footer class="footer">
-    Built with Python · Ollama · Qwen3 &nbsp;|&nbsp;
-    <a href="https://github.com/simabar/local_ai_coding_assistant">GitHub repo</a>
+    <p class="poster poster-sm text-yellow">Built with Python, Ollama &amp; Qwen3</p>
+    <a href="https://github.com/simabar/local_ai_coding_assistant">See the code on GitHub →</a>
   </footer>
 
   <script src="script.js"></script>

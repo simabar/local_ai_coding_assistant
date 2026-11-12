@@ -16,14 +16,14 @@ How the Local AI Coding Assistant was built, in pictures.
 ### 4 · Python project and virtual environment
 ![Virtual environment](images/pic4.png)
 
-### 5 · Writing assistant.py
-![assistant.py](images/pic5.png)
+### 5 · Starting gitkraken
+![gitkraken](images/pic5.png)
 
-### 6 · The buggy code
-![buggy.py and the NameError](images/pic6.png)
+### 6 · Branching
+![branches](images/pic6.png)
 
-### 7 · The AI finds the bug
-![The assistant explains the bug](images/pic7.png)
+### 7 · Merging
+![merging](images/pic7.png)
 
 ### 8 · Ollama in VS Code
 ![VS Code integration](images/pic8.png)

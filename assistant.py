@@ -65,12 +65,8 @@ def main():
 
     question = input("What should I analyze? ")
 
-    print("\nAnalyzing your code...\n")
-
-    answer = analyze_code(code, question)
-
-    print(answer)
-
+    print("\nAnalyzing your code...\n") 
+    analyze_code(code,question)
 
 if __name__ == "__main__":
     main()

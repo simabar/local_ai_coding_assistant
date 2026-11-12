@@ -10,14 +10,14 @@ How the Local AI Coding Assistant was built, in pictures.
 ### 2 · Downloading the model
 ![Downloading Qwen3](images/pic2.png)
 
-### 3 · First chat with the local model
-![First chat with Qwen3](images/pic3.png)
-
-### 4 · Python project and virtual environment
+### 3 · Python project and virtual environment
 ![Virtual environment](images/pic4.png)
 
-### 5 · Starting gitkraken
+### 4 · Starting gitkraken
 ![gitkraken](images/pic5.png)
+
+### 5 · creating files
+![First chat with Qwen3](images/pic3.png)
 
 ### 6 · Branching
 ![branches](images/pic6.png)

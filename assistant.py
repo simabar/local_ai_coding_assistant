@@ -4,8 +4,10 @@ from ollama import chat
 
 MODEL = "qwen3:4b"
 def analyze_code(code, question):
-    response = chat(
+    stream = chat(
         model=MODEL,
+        stream=True,
+        think=True,
         messages=[
             {
                 "role": "system",
@@ -26,7 +28,25 @@ def analyze_code(code, question):
         ]
     )
 
-    return response.message.content
+    in_thinking = False
+
+    for chunk in stream:
+        thinking_piece = getattr(chunk.message, "thinking", None)
+        content_piece = chunk.message.content
+
+        if thinking_piece:
+            if not in_thinking:
+                print("--- AI Thinking Process ---")
+                in_thinking = True
+            print(thinking_piece, end="", flush=True)
+
+        elif content_piece:
+            if in_thinking:
+                print("\n\n--- Final Answer ---")
+                in_thinking = False
+            print(content_piece, end="", flush=True)
+
+    print()
 
 
 def main():
